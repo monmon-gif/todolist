@@ -60,6 +60,8 @@ export default function GoalDetailClient({ goal }: { goal: any }) {
       return;
     }
 
+    // 更新成功後、詳細画面を再読み込みして最新の情報を表示する
+    router.refresh();
     // 更新成功後、編集モードを終了して詳細表示に戻す
     setIsEdit(false);
   };
@@ -82,6 +84,8 @@ export default function GoalDetailClient({ goal }: { goal: any }) {
       return;
     }
 
+    // 削除成功後、詳細画面を再読み込みして最新の情報を表示する
+    router.refresh();
     // 削除成功後、一覧画面へ戻る
     router.push("/");
   };
