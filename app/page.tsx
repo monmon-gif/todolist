@@ -2,6 +2,8 @@ import { supabase } from "@/lib/supabase";
 import RegisterButton from "@/components/RegisterButton";
 import GoalList from "@/components/GoalList";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   // Supabaseからgoalsテーブルのデータを取得
   // created_atの新しい順に並び替える
