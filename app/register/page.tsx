@@ -68,10 +68,11 @@ export default function RegisterPage() {
       // 以降の処理を止める
       return;
     }
-    // 登録成功後、詳細画面を再読み込みして最新の情報を表示する
-    router.refresh();
+
     // 登録成功後、一覧画面へ戻る
     router.push("/");
+    // 登録成功後、詳細画面を再読み込みして最新の情報を表示する
+    router.refresh();
   };
 
   return (

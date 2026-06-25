@@ -59,11 +59,10 @@ export default function GoalDetailClient({ goal }: { goal: any }) {
       alert(error.message);
       return;
     }
-
-    // 更新成功後、詳細画面を再読み込みして最新の情報を表示する
-    router.refresh();
     // 更新成功後、編集モードを終了して詳細表示に戻す
     setIsEdit(false);
+    // 更新成功後、詳細画面を再読み込みして最新の情報を表示する
+    router.refresh();
   };
 
   // 削除ボタンが押されたときの削除処理
@@ -83,11 +82,10 @@ export default function GoalDetailClient({ goal }: { goal: any }) {
       alert(error.message);
       return;
     }
-
-    // 削除成功後、詳細画面を再読み込みして最新の情報を表示する
-    router.refresh();
     // 削除成功後、一覧画面へ戻る
     router.push("/");
+    // 削除成功後、一覧画面を再読み込みして最新の情報を表示する
+    router.refresh();
   };
 
   return (
