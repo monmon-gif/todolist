@@ -40,6 +40,9 @@ type Props = {
 
   // 保存ボタン押下時の処理
   onSave: () => void;
+
+  // 保存処理中かどうか
+  isLoading: boolean;
 };
 
 // やりたいこと編集フォーム
@@ -56,6 +59,7 @@ export default function GoalEditForm({
   setMemo,
   onCancel,
   onSave,
+  isLoading,
 }: Props) {
   return (
     <>
@@ -146,9 +150,12 @@ export default function GoalEditForm({
         {/* 編集内容を保存する */}
         <button
           onClick={onSave}
-          className="rounded-xl bg-blue-600 px-8 py-3 font-semibold text-white shadow transition hover:bg-blue-700 hover:shadow-lg active:scale-95"
+          // 更新中はボタンを押せないようにする
+          disabled={isLoading}
+          className="rounded bg-blue-500 px-4 py-2 text-white disabled:opacity-50"
         >
-          保存
+          {/* 更新中はボタンの文字を変更する */}
+          {isLoading ? "更新中..." : "更新"}
         </button>
       </div>
     </>

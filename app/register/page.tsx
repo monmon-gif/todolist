@@ -32,48 +32,61 @@ export default function RegisterPage() {
   // メモ入力用の状態
   const [memo, setMemo] = useState("");
 
+  // 2度押し防止
+  const [isLoading, setIsLoading] = useState(false);
+
   // 「登録」ボタンが押されたときの処理
   const handleSubmit = async () => {
-    // goalsテーブルに入力内容を登録する
-    const { error } = await supabase.from("goals").insert([
-      {
-        // タイトル
-        title,
+    // 2度押し防止
+    if (isLoading) return;
 
-        // カテゴリ
-        category,
+    setIsLoading(true);
 
-        // 優先度
-        priority,
+    try {
+      // goalsテーブルに入力内容を登録する
+      const { error } = await supabase.from("goals").insert([
+        {
+          // タイトル
+          title,
 
-        // ステータス
-        status,
+          // カテゴリ
+          category,
 
-        // メモ
-        memo,
+          // 優先度
+          priority,
 
-        // 作成日時を現在時刻で登録
-        created_at: new Date().toISOString(),
-      },
-    ]);
+          // ステータス
+          status,
 
-    // 登録時にエラーが発生した場合
-    if (error) {
-      // エラー内容をコンソールに出力
-      console.error(error);
+          // メモ
+          memo,
 
-      // 画面に登録失敗メッセージを表示
-      alert("登録失敗");
+          // 作成日時を現在時刻で登録
+          created_at: new Date().toISOString(),
+        },
+      ]);
 
-      // 以降の処理を止める
-      return;
+      // 登録時にエラーが発生した場合
+      if (error) {
+        // エラー内容をコンソールに出力
+        console.error(error);
+
+        // 画面に登録失敗メッセージを表示
+        alert("登録失敗");
+
+        // 以降の処理を止める
+        return;
+      }
+
+      // 登録成功後、一覧画面へ戻る
+      router.push("/");
+      // 登録成功後、詳細画面を再読み込みして最新の情報を表示する
+      router.refresh();
+    } finally {
+      // 登録処理終了後、再度ボタンを押せるようにする
+      setIsLoading(false);
     }
-
-    // 登録成功後、一覧画面へ戻る
-    router.push("/");
-    // 登録成功後、詳細画面を再読み込みして最新の情報を表示する
-    router.refresh();
-  };
+  };  
 
   return (
     // 画面全体の背景と余白
@@ -170,9 +183,12 @@ export default function RegisterPage() {
           {/* 入力内容を登録するボタン */}
           <button
             onClick={handleSubmit}
+            // 更新中はボタンを押せないようにする
+            disabled={isLoading}
             className="rounded-xl bg-blue-600 px-8 py-3 font-semibold text-white shadow transition hover:bg-blue-700 hover:shadow-lg active:scale-95"
           >
-            登録
+            {/* 更新中はボタンの文字を変更する */}
+            {isLoading ? "登録中..." : "登録"}
           </button>
 
         </div>

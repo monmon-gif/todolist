@@ -36,33 +36,48 @@ export default function GoalDetailClient({ goal }: { goal: any }) {
   // goal.memoがnullの場合は空文字にする
   const [memo, setMemo] = useState(goal.memo ?? "");
 
+  // 2度押し防止
+  const [isLoading, setIsLoading] = useState(false);
+
   // ページ遷移を行うためのrouterを取得
   const router = useRouter();
 
   // 保存ボタンが押されたときの更新処理
   const handleUpdate = async () => {
-    // goalsテーブルの対象データを更新する
-    const { error } = await supabase
-      .from("goals")
-      .update({
-        title,
-        category,
-        priority,
-        status,
-        memo,
-      })
-      // idが一致するデータだけを更新対象にする
-      .eq("id", goal.id);
+    // 2度押し防止
+    if (isLoading) return;
 
-    // 更新時にエラーが発生した場合
-    if (error) {
-      alert(error.message);
-      return;
+    setIsLoading(true);
+
+    try {
+      // goalsテーブルの対象データを更新する
+      const { error } = await supabase
+        .from("goals")
+        .update({
+          title,
+          category,
+          priority,
+          status,
+          memo,
+        })
+        // idが一致するデータだけを更新対象にする
+        .eq("id", goal.id);
+
+      // 更新時にエラーが発生した場合
+      if (error) {
+        alert(error.message);
+        return;
+      }
+
+      // 更新成功後、編集モードを終了して詳細表示に戻す
+      setIsEdit(false);
+
+      // 更新成功後、詳細画面を再読み込みして最新の情報を表示する
+      router.refresh();
+    } finally {
+      // 更新処理終了後、再度ボタンを押せるようにする
+      setIsLoading(false);
     }
-    // 更新成功後、編集モードを終了して詳細表示に戻す
-    setIsEdit(false);
-    // 更新成功後、詳細画面を再読み込みして最新の情報を表示する
-    router.refresh();
   };
 
   // 削除ボタンが押されたときの削除処理
@@ -109,6 +124,7 @@ export default function GoalDetailClient({ goal }: { goal: any }) {
             setPriority={setPriority}
             setStatus={setStatus}
             setMemo={setMemo}
+            isLoading={isLoading}
             onCancel={() => setIsEdit(false)}
             onSave={handleUpdate}
           />
