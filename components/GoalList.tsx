@@ -27,7 +27,7 @@ export default function GoalList({ goals }: Props) {
   const [currentPage, setCurrentPage] = useState(1);
 
   // 1ページに表示する件数
-  const perPage = 10;
+  const perPage = 5;
 
   // 全ページ数を計算
   const totalPages = Math.ceil(filteredGoals.length / perPage);
