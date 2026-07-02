@@ -1,11 +1,10 @@
 export const CATEGORIES = [
   "旅行",
-  "資格",
-  "仕事",
   "趣味",
-  "勉強",
-  "買い物",
   "健康",
+  "カフェ",
+  "運動",
+  "ごはん",
 ] as const;
 
 export const PRIORITIES = [
